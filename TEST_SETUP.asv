@@ -9,7 +9,7 @@ enable_AFT = true;
 enable_OTFS = true;
 enable_2d_AFT = true;
 enable_Especial_2d_AFT = true;
-enable_OTFS_LMMSE = true;
+enable_OTFS_LMMSE = false;
 SC_AFT = false;
 %% OTFS parameters
 
@@ -18,7 +18,7 @@ N = 8
 % number of subcarriers
 M = 8
 % size of constellation
-M_mod = 64
+M_mod = 16
 M_bits = log2(M_mod);
 % number of symbols per frame
 N_syms_perfram = N*M;
@@ -35,7 +35,7 @@ SC_fac = 2;
 % number of AFT symbol
 Num_AFT_sym = N;
 % noise poser
-SNR_dB = [0 5 15 17 20 22 25];0:5:30;
+SNR_dB = 0:5:25;[0 5 15 17 20 22 25];0:5:30;
 SNR = 10.^(SNR_dB/10);
 noise_var_sqrt = sqrt(1./SNR);
 
@@ -161,11 +161,11 @@ for iesn0 = 0:length(SNR_dB)
             y_OTFS = OTFS_demodulation(N,M,r_OTFS);
         end
         if enable_2d_AFT
-            %if enable_OTFS_LMMSE
+            if enable_OTFS_LMMSE
                 %r_2d_AFT = H_2d_AFT'*(H_2d_AFT*H_2d_AFT' +sigma_2_OTFS(iesn0)/sig_energy_OTFS_sqrt^2*eye(M*N))^(-1)*r_2d_AFT;
                 %
                 H_EQ_2d_AFT = H_EQ_2d_AFT_Calc(N,M, c1, c2, c3, c4, H_2d_AFT);
-            %end
+            end
             y_2d_AFT = AFT_2d_demodulation(N,M,r_2d_AFT, c1, c2, c3, c4);
         end
         if enable_Especial_2d_AFT

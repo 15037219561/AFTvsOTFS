@@ -28,7 +28,7 @@
 function x_est = OTFS_mp_detector(N,M,M_mod,taps,delay_taps,Doppler_taps,chan_coef,sigma_2,y)
 
 yv = reshape(y,N*M,1);
-n_ite = 200;
+n_ite = 50;
 delta_fra = 0.6;
 alphabet = qammod(0:M_mod-1,M_mod);
 
@@ -95,8 +95,7 @@ for ite=1:n_ite
                 if int_flag==1
                     add_term1 = exp(-1i*2*pi*((ele2-1)/N));
                 end
-                %eff_ele2 = mod(ele2-1+Doppler_taps(tap_no),N) + 1;
-                eff_ele2 = floor(mod(ele2-1+Doppler_taps(tap_no),N) + 1);
+                eff_ele2 = mod(ele2-1+Doppler_taps(tap_no),N) + 1;
                 new_chan = add_term * add_term1 * chan_coef(tap_no);
                 
                 dum_eff_ele1(tap_no) = eff_ele1;

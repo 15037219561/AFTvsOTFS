@@ -25,14 +25,14 @@
 %    - Latest version of this code may be downloaded from: https://ecse.monash.edu/staff/eviterbo/
 %    - Freely distributed for educational and research purposes
 %%
-function y = OTFS_demodulation(N,M,r)
-%% OTFS demodulation: 1. Wiegner transform, 2. SFFT
-r_mat = reshape(r,M,N);
-% Y = fft(r_mat)/sqrt(M); % Wigner transform
-% Y = Y.';
-% y = ifft(fft(Y).').'/sqrt(N/M); % SFFT
-
-
-Y = fft(r_mat)/sqrt(M); % Wigner transform
-y = fft(ifft(Y).').'/sqrt(N/M); %%%ISFFT
+function sig_energy = AFT_especial_2d_Sig_energy(N,M,taps,delay_taps,Doppler_taps,chan_coef,s)
+%% wireless channel and noise 
+L = max(delay_taps);
+s_chan = 0;
+s_chan_me = 0;
+for itao = 1:taps
+    s_chan = s_chan+chan_coef(itao)*circshift([s.*exp(1j*2*pi/M ...
+        *(-L:-L+length(s)-1)*Doppler_taps(itao)/N).';zeros(delay_taps(end),1)],delay_taps(itao));
+end
+sig_energy = sum(abs(s_chan).^2)/length(s_chan);
 end
