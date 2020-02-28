@@ -6,10 +6,10 @@ warning('off','all')
 tic
 %% Enabling Options
 enable_AFT = true;
-enable_OTFS = true;
-enable_2d_AFT = true;
-enable_Especial_2d_AFT = true;
-enable_OTFS_LMMSE = true;
+enable_OTFS = false;
+enable_2d_AFT = false;
+enable_Especial_2d_AFT = false;
+enable_OTFS_LMMSE = false;
 SC_AFT = false;
 %% OTFS parameters
 
@@ -202,7 +202,11 @@ for iesn0 = 0:length(SNR_dB)
                 y_2d_especial_AFT, sigma_2_2d_especial_AFT(iesn0), sig_energy_2d_especial_AFT_sqrt);
         end
         if enable_AFT
-            x_est_AFT = AFT_mp_detector(N_AFT, Num_AFT_sym, c0, c1, c2,taps,delay_taps,Doppler_taps,chan_coef, y_AFT);
+            if enable_ML
+                x_est_AFT = AFT_ML_detector(N_AFT, Num_AFT_sym, c0, c1, c2,taps,delay_taps,Doppler_taps,chan_coef, y_AFT);
+            else
+                x_est_AFT = AFT_mp_detector(N_AFT, Num_AFT_sym, c0, c1, c2,taps,delay_taps,Doppler_taps,chan_coef, y_AFT);
+            end
             if SC_AFT
                 x_est_AFT = transpose(ifft(transpose(x_est_AFT)));
                 N_AFT = N_AFT/SC_fac;
