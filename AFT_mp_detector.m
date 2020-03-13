@@ -1,4 +1,4 @@
-function x_est = AFT_mp_detector(N_AFT, Num_OFDM_sym, c0, c1, c2,taps,delay_taps,Doppler_taps,chan_coef, y)
+function [x_est H_eq] = AFT_mp_detector(N_AFT, Num_OFDM_sym, c0, c1, c2,taps,delay_taps,Doppler_taps,chan_coef, y)
 N_CP        = max(delay_taps);
 V_n_l       = zeros(N_AFT + N_CP);
 G_n_l       = zeros(N_AFT + N_CP);
@@ -22,7 +22,7 @@ for n = -N_CP:N_AFT-1
     end
 end
 F                   = 1/sqrt(N_AFT)*dftmtx(N_AFT);
-Gamma_c2 = eye(N_AFT); % because c2 = 0;
+Gamma_c2 = diag(exp(-1i*2*pi*(c2.*(0:N_AFT-1).^2)));; % because c2 = 0;
 H_eq                                                  = Gamma_c2*F*G_mat*F'*Gamma_c2';
 h_channel_eq_total                                    = transpose(diag(H_eq));
 h_channel_eq_total(ismember(h_channel_eq_total , 0))  = .0001;

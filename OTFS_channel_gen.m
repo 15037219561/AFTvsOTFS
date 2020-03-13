@@ -25,12 +25,15 @@
 %    - Latest version of this code may be downloaded from: https://ecse.monash.edu/staff/eviterbo/
 %    - Freely distributed for educational and research purposes
 %%
-function [taps,delay_taps,Doppler_taps,chan_coef] = OTFS_channel_gen(N,M)
+function [taps,delay_taps,Doppler_taps,chan_coef] = OTFS_channel_gen(taps_set, delay_taps_set, Doppler_taps_set)
 %% Channel for testing%%%%%
 %channel with 4 taps of uniform power%%% 
-taps = 2;
-delay_taps = [0 1];
-Doppler_taps = [0 1];
+%taps = 2;
+taps = taps_set;
+%delay_taps = [0 4];
+delay_taps = delay_taps_set;
+%Doppler_taps = [1/M  6/M]; %diversity
+Doppler_taps = Doppler_taps_set;
 pow_prof = (1/taps) * (ones(1,taps));
 chan_coef = sqrt(pow_prof).*(sqrt(1/2) * (randn(1,taps)+1i*randn(1,taps)));
 %%%%%%%%%%%%%%%%%%%%
